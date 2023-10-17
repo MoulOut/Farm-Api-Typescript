@@ -6,6 +6,7 @@
   "author": "Matheus Moulin",
   "license": "MIT",
   "private": false,
+  "repository": "https://github.com/MoulOut/Farm-Api-Typescript.git",
   "dependencies": {
     "express": "^4.18.2"
   },
