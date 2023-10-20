@@ -1,15 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "build/index.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src":"(.*)",
-      "dest": "src/index.ts"
-    }
-  ]
+  "installCommand": "yarn install",
+  "buildCommand": "yarn build",
+  "cleanUrls": true
 }
