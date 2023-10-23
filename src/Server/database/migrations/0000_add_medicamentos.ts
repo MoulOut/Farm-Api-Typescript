@@ -5,7 +5,7 @@ export async function up(knex: Knex) {
   return knex.schema
     .createTable(ETableNames.medicamento, (table) => {
       table.bigIncrements('id').primary().index();
-      table.string('nome', 150).index().notNullable();
+      table.string('nome', 150).unique().index().notNullable();
       table.string('classe').index().notNullable();
 
       table.comment('Tabela usada para armazenar medicamentos no sistema');
