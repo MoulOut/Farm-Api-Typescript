@@ -6,13 +6,13 @@ export const add = async (
   medicamento: Omit<Medicamentos, 'id'>
 ): Promise<number | Error> => {
   try {
-    const [result] = await Knex(ETableNames.medicamento).insert(medicamento).returning('id');
+    const [medToAdd] = await Knex(ETableNames.medicamento).insert(medicamento).returning('id');
 
 
-    if (typeof result === 'object') {
-      return result.id;
-    } else if (typeof result === 'number') {
-      return result;
+    if (typeof medToAdd === 'object') {
+      return medToAdd.id;
+    } else if (typeof medToAdd === 'number') {
+      return medToAdd;
     }
     return new Error('Erro ao cadastrar o registro.');
   } catch (error) {

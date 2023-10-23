@@ -3,9 +3,9 @@ import { Knex } from '../../knex';
 
 export const removeById = async (id: number): Promise<void | Error> => {
   try {
-    const result = await Knex(ETableNames.medicamento).where('id', '=', id).del();
+    const medToRemove = await Knex(ETableNames.medicamento).where('id', '=', id).del();
 
-    if (result > 0) return;
+    if (medToRemove > 0) return;
 
     return new Error('Erro ao apagar o registro.');
   } catch (error) {

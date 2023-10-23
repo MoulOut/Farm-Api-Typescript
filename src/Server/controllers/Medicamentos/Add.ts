@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { StatusCodes } from 'http-status-codes';
 import { Medicamentos } from '../../database/models';
 import { validation } from '../../shared/middlewares';
+import { MedicamentosProvider } from '../../database/providers/medicamentos';
 
 interface Body extends Omit<Medicamentos, 'id'> {}
 
@@ -16,9 +17,15 @@ export const addValidation = validation((getSchema) => ({
 }));
 
 export const add = async (req: Request<{}, {}, Body>, res: Response) => {
-  console.log(req.body);
+  const addMed = await MedicamentosProvider.add(req.body);
 
-  return res
-    .status(StatusCodes.CREATED)
-    .json(`Medicamento ${req.body.nome} cadastrado no sistema.`);
+  if (addMed instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: addMed.message,
+      },
+    });
+  }
+  
+  res.status(StatusCodes.CREATED).json(addMed);
 };

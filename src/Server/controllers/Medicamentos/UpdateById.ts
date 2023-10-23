@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
 import { Medicamentos } from '../../database/models';
+import { MedicamentosProvider } from '../../database/providers/medicamentos';
 
 interface Body extends Omit<Medicamentos, 'id'> {}
 
@@ -24,6 +25,24 @@ export const updateByIdValidation = validation((getSchema) => ({
   ),
 }));
 
-export const updateById = (req: Request<Params, {}, Body>, res: Response) => {
-  res.status(StatusCodes.OK).json('Not implemented yet.');
+export const updateById = async (req: Request<Params, {}, Body>, res: Response) => {
+  if (!req.params.id) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: {
+        default: 'Parametro Id precisa ser informado',
+      },
+    });
+  }
+
+  const updateMed = await MedicamentosProvider.updateByid(req.params.id,req.body);
+
+  if (updateMed instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: updateMed.message
+      }
+    });
+  }
+
+  res.status(StatusCodes.NO_CONTENT).json(updateMed);
 };

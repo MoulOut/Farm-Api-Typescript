@@ -4,12 +4,12 @@ import { Medicamentos } from '../../models';
 
 export const getById = async (id: number): Promise<Medicamentos | Error> => {
   try {
-    const result = await Knex(ETableNames.medicamento)
+    const medToGet = await Knex(ETableNames.medicamento)
       .select('*')
       .where('id', '=', id)
       .first();
 
-    if (result) return result;
+    if (medToGet) return medToGet;
 
     return new Error('Registro não encontrado');
   } catch (error) {
