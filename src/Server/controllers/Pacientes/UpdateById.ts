@@ -14,7 +14,7 @@ export const updateByIdValidation = validation((getSchema) => ({
   body: getSchema<Body>(
     yup.object().shape({
       nomeCompleto: yup.string().required(),
-      medicamentosId: yup.array().required(),
+      medicamentosId: yup.lazy(val => (Array.isArray(val) ? yup.array().of(yup.number().required()).required() : yup.number().required()))
     })
   ),
   params: getSchema<Params>(

@@ -1,5 +1,5 @@
 export interface Paciente {
   id: number;
   nomeCompleto: string;
-  medicamentosId: Array<number> ;
+  medicamentosId: number[] | number ;
 }
