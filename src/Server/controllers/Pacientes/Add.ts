@@ -10,7 +10,11 @@ export const addValidation = validation((getSchema) => ({
   body: getSchema<Body>(
     yup.object().shape({
       nomeCompleto: yup.string().required().min(3),
-      medicamentosId: yup.array().required().min(1),
+      medicamentosId: yup.lazy((val) =>
+        Array.isArray(val)
+          ? yup.array().of(yup.number().required()).required()
+          : yup.number().required()
+      ),
     })
   ),
 }));

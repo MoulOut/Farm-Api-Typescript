@@ -14,7 +14,11 @@ export const updateByIdValidation = validation((getSchema) => ({
   body: getSchema<Body>(
     yup.object().shape({
       nomeCompleto: yup.string().required(),
-      medicamentosId: yup.lazy(val => (Array.isArray(val) ? yup.array().of(yup.number().required()).required() : yup.number().required()))
+      medicamentosId: yup.lazy((val) =>
+        Array.isArray(val)
+          ? yup.array().of(yup.number().required()).required()
+          : yup.number().required()
+      ),
     })
   ),
   params: getSchema<Params>(
@@ -24,6 +28,9 @@ export const updateByIdValidation = validation((getSchema) => ({
   ),
 }));
 
-export const updateById = async (req: Request<Params,{},Body>, res: Response) => {
+export const updateById = async (
+  req: Request<Params, {}, Body>,
+  res: Response
+) => {
   return res.status(StatusCodes.OK).json('Not implemented yet.');
 };
