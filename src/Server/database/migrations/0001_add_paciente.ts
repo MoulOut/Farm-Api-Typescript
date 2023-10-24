@@ -6,14 +6,7 @@ export async function up(knex: Knex) {
     .createTable(ETableNames.paciente, (table) => {
       table.bigIncrements('id').primary().index();
       table.string('nomeCompleto').index().notNullable();
-      table
-        .integer('medicamentosId')
-        .index()
-        .notNullable()
-        .references('id')
-        .inTable(ETableNames.medicamento)
-        .onUpdate('CASCADE')
-        .onDelete('RESTRICT');
+      table.jsonb('medicamentosId').index().notNullable();
 
       table.comment('Tabela usada para armazenar pacientes no sistema');
     })
