@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { MedicamentosController,PacientesController } from '../controllers';
+import {
+  MedicamentosController,
+  PacientesController,
+  UsuariosController,
+} from '../controllers';
 
 const router = Router();
 
@@ -65,6 +69,18 @@ router.put(
   '/pacientes/:id',
   PacientesController.updateByIdValidation,
   PacientesController.updateById
+);
+
+router.post(
+  '/cadastrar',
+  UsuariosController.SignUpValidation,
+  UsuariosController.signUp
+);
+
+router.post(
+  '/entrar',
+  UsuariosController.SignInValidation,
+  UsuariosController.SignIn
 );
 
 export { router };
