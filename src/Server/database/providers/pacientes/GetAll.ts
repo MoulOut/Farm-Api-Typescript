@@ -13,7 +13,11 @@ export const getAll = async (
       .where('nomeCompleto', 'like', `%${filter}%`)
       .offset((page - 1) * limit)
       .limit(limit);
-
+    
+    if( allPaciente.length === 0) {
+      return new Error('Não há registros no banco de dados.');
+    }
+    
     return allPaciente;
   } catch (error) {
     console.log(error);

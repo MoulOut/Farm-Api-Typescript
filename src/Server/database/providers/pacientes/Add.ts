@@ -2,10 +2,15 @@ import { Paciente } from '../../models';
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
 
+
 export const add = async (
   paciente: Omit<Paciente, 'id'>
 ): Promise<number | Error> => {
   try {
+    if (typeof paciente.medicamentosId !== 'number') {
+      paciente.medicamentosId = paciente.medicamentosId.toString();
+    }
+      
     const [pacienteToAdd] = await Knex(ETableNames.paciente)
       .insert(paciente)
       .returning('id');
