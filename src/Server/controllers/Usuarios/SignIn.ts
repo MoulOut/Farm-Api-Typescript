@@ -4,6 +4,7 @@ import { Usuario } from '../../database/models';
 import { StatusCodes } from 'http-status-codes';
 import { validation } from '../../shared/middlewares';
 import { UsuariosProviders } from '../../database/providers/usuarios';
+import { PassCrypto } from '../../shared/services';
 
 interface Body extends Omit<Usuario, 'id' | 'nome'> {}
 
@@ -17,7 +18,8 @@ export const SignInValidation = validation((getSchema) => ({
 }));
 
 export const SignIn = async (req: Request<{}, {}, Body>, res: Response) => {
-  const user = await UsuariosProviders.getByEmail(req.body.email);
+  const { email, senha } = req.body;
+  const user = await UsuariosProviders.getByEmail(email);
 
   if (user instanceof Error) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -27,12 +29,13 @@ export const SignIn = async (req: Request<{}, {}, Body>, res: Response) => {
     });
   }
 
-  if (req.body.senha !== user.senha) {
+  const matchPass = await PassCrypto.verifyPassword(senha, user.senha);
+  if (!matchPass) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
         default: 'Email ou senha invalidos.',
       },
     });
   }
-  return res.status(StatusCodes.OK).json({accessToken: 'testeToken'});
+  return res.status(StatusCodes.OK).json({ accessToken: 'testeToken' });
 };

@@ -1,3 +1,4 @@
+import { PassCrypto } from '../../../shared/services';
 import { ETableNames } from '../../ETableNames';
 import { Knex } from '../../knex';
 import { Usuario } from '../../models';
@@ -6,9 +7,13 @@ export const register = async (
   usuario: Omit<Usuario, 'id'>
 ): Promise<number | Error> => {
   try {
-    const [newUser] = await Knex(ETableNames.usuario).insert(usuario).returning('id');
+    const hashedPass = await PassCrypto.hashPassword(usuario.senha);
 
-    if(typeof newUser === 'object'){
+    const [newUser] = await Knex(ETableNames.usuario)
+      .insert({ ...usuario, senha: hashedPass })
+      .returning('id');
+
+    if (typeof newUser === 'object') {
       return newUser.id;
     } else if (typeof newUser === 'number') {
       return newUser;
