@@ -4,7 +4,7 @@ import { Usuario } from '../../database/models';
 import { StatusCodes } from 'http-status-codes';
 import { validation } from '../../shared/middlewares';
 import { UsuariosProviders } from '../../database/providers/usuarios';
-import { PassCrypto } from '../../shared/services';
+import { JWTSerivce, PassCrypto } from '../../shared/services';
 
 interface Body extends Omit<Usuario, 'id' | 'nome'> {}
 
@@ -37,5 +37,15 @@ export const SignIn = async (req: Request<{}, {}, Body>, res: Response) => {
       },
     });
   }
-  return res.status(StatusCodes.OK).json({ accessToken: 'testeToken' });
+
+  const accessToken = await JWTSerivce.signIn({ uid: user.id });
+  if (accessToken === 'JWT_SECRET_NOT_FOUND') {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: 'Erro ao gerar o token de acesso.',
+      },
+    });
+  }
+  
+  return res.status(StatusCodes.OK).json({ accessToken: accessToken });
 };
