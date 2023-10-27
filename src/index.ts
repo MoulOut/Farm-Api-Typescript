@@ -1,4 +1,5 @@
 import { server } from './Server/Server';
+import { Knex } from './Server/database/knex';
 
 const startServer = () => {
   server.listen(process.env.PORT || 3333, () =>{
@@ -7,4 +8,15 @@ const startServer = () => {
   });
 };
 
-startServer();
+if (process.env.IS_LOCALHOST !== 'true') {
+  console.log('Rodando migrations');
+
+  Knex.migrate.latest().then(() => {
+    Knex.seed
+      .run()
+      .then(() => startServer())
+      .catch(console.log);
+  });
+} else {
+  startServer();
+}
