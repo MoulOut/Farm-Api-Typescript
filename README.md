@@ -1,4 +1,4 @@
-##Este projeto é uma API Rest em NodeJS e Typescript desenvolvida para fins de aprendizado. 
+## Este projeto é uma API Rest em NodeJS e Typescript desenvolvida para fins de aprendizado. 
 
 # Sobre o projeto
 
@@ -29,7 +29,9 @@ Está é uma API Rest, então não tem interface nesse repositório.
 Você vai precisar do nodens instalado no seu computador para rodar o projeto.
 
 Clone o repositório:
+
 Entre na pasta
+
 Instale as dependências
 ```
 $ yarn install
